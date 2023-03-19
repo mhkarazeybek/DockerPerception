@@ -6,11 +6,14 @@ XUBUNTU_VERSION_CHOICE=("18.04" "20.04" "22.04")
 XCUDA_VERSIONS=11.4
 XCUDA_VERSION_CHOICE=("11.4" "12.0" "10.2")
 
-XCMAKE_VERSION=22.1.0
-XCMAKE_VERSION_CHOICE=("22.1.0" "10.2")
+XCMAKE_VERSION=3.20.1
+XCMAKE_VERSION_CHOICE=("3.20.1" "10.2")
 
 XOPENCV_VERSION=4.5.1
 XOPENCV_VERSION_CHOICE=("4.5.1")
+
+XDARKNET="Yes"
+XDARKNET_CHOICE=("Yes" "No")
 
 menu() {
         choice=0
@@ -41,12 +44,17 @@ menu  "Opencv Version" ${XOPENCV_VERSION_CHOICE[@]}
 XOPENCV_VERSION=${XOPENCV_VERSION_CHOICE[$choice-1]}
 
 
+menu  "Opencv Version" ${XDARKNET_CHOICE[@]}
+XDARKNET=${XDARKNET_CHOICE[$choice-1]}
+
+
 clear
 echo "You selected:\n"
 echo "Ubuntu Version:           $XUBUNTU_VERSION"
 echo "Cuda Version:             $XCUDA_VERSIONS"
 echo "Cmake Version:            $XCMAKE_VERSION"
 echo "Opencv Version:           $XOPENCV_VERSION"
+echo "Darknet:                  $XDARKNET"
 echo "Hit enter to start building the container"
 read
 
@@ -59,6 +67,7 @@ docker build -t docker-perception \
         --build-arg CMAKE_VERSION=$XCMAKE_VERSION \
         --build-arg OPENCV_VERSION=$XOPENCV_VERSION \
         --build-arg UBUNTU_URL=$UBUNTU_URL \
+        --build-arg USE_ZED=$XDARKNET \
         .
 
 docker create --name docker-perception \

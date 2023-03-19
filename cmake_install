@@ -2,17 +2,20 @@
 
 CMAKE_VERSION=$1
 
-apt-get install cmake
+apt-get install cmake -y
 
-# CMake 20.10'u indirin ve açın
+# CMake 3.20.1 'u indirin ve açın
 curl -OL https://github.com/Kitware/CMake/releases/download/v$CUDA_VERSION/cmake-$CUDA_VERSION-SHA-256.txt
 curl -OL https://github.com/Kitware/CMake/releases/download/v$CUDA_VERSION/cmake-$CUDA_VERSION.tar.gz
+
 sha256sum -c --ignore-missing cmake-$CUDA_VERSION-SHA-256.txt
-tar -xzvf cmake-$CUDA_VERSION.tar.gz
+
+tar -xzvf cmake-$cd c.tar.gz
 
 # cmake-3.20.0 klasörüne gidin
 cd cmake-$CMAKE_VERSION
 
-cmake .
-make      
+cmake -DCMAKE_USE_OPENSSL=OFF .
+make
 make install
+export PATH=/root/cmake-$CMAKE_VERSION/bin:$PATH

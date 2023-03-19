@@ -3,6 +3,7 @@ ARG CUDA_VERSION
 ARG CMAKE_VERSION
 ARG OPENCV_VERSION
 ARG UBUNTU_URL
+ARG USE_ZED
 
 FROM ubuntu:$UBUNTU_VERSION
 
@@ -33,13 +34,19 @@ WORKDIR /root
 
 # #CUDA INSTALL
 COPY cuda_install /root/
-RUN sh cuda_install ${CUDA_VERSION} ${UBUNTU_URL}
+# RUN sh cuda_install ${CUDA_VERSION} ${UBUNTU_URL}
 
 #CMAKE INSTALL
 COPY cmake_install /root/
-RUN sh cmake_install ${CMAKE_VERSION}
+# RUN sh cmake_install ${CMAKE_VERSION}
 
+#OPENCV INSTALL
+COPY opencv_install /root/
+# RUN sh opencv_install ${OPENCV_VERSION} ${CUDA_VERSION}
 
+#DARKNET INSTALL
+COPY darknet_install /root/
+# RUN sh darknet_install ${USE_ZED}
 
 EXPOSE 3389
 

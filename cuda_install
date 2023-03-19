@@ -1,0 +1,49 @@
+#!/bin/bash
+
+CUDA_VERSION=$1
+UBUNTU_URL=$2
+
+if [ "$CUDA_VERSION" == "11.4" ]; then
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin;
+    mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600;
+    wget https://developer.download.nvidia.com/compute/cuda/11.4.4/local_installers/cuda-repo-ubuntu1804-11-4-local_11.4.4-470.82.01-1_amd64.deb;
+    dpkg -i cuda-repo-ubuntu1804-11-4-local_11.4.4-470.82.01-1_amd64.deb;
+    apt-key add /var/cuda-repo-ubuntu1804-11-4-local/7fa2af80.pub;
+elif [ "$CUDA_VERSION" == "12.0" ]; then
+    wget https://developer.download.nvidia.com/compute/cuda/12.0.1/local_installers/cuda-repo-ubuntu1804-12-0-local_12.0.1-525.85.12-1_amd64.deb
+    dpkg -i cuda-repo-ubuntu1804-12-0-local_12.0.1-525.85.12-1_amd64.deb
+    cp /var/cuda-repo-ubuntu1804-12-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
+elif [ "$CUDA_VERSION" == "10.2" ]; then
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin;
+    mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600;
+    wget https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb;
+    dpkg -i cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb;
+    apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub;
+else
+    echo "Invalid Cuda version"
+fi
+
+apt-get update -y
+apt-get -y install cuda
+
+# if [ "$CUDA_VERSION" = "11.4" ]; then 
+#     wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin; \
+#     mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600; \
+#     wget https://developer.download.nvidia.com/compute/cuda/11.4.4/local_installers/cuda-repo-ubuntu1804-11-4-local_11.4.4-470.82.01-1_amd64.deb; \
+#     dpkg -i cuda-repo-ubuntu1804-11-4-local_11.4.4-470.82.01-1_amd64.deb; \
+#     apt-key add /var/cuda-repo-ubuntu1804-11-4-local/7fa2af80.pub; \
+#     apt-get update -y;\
+#     apt-get -y install cuda;\
+# elif [ "$CUDA_VERSION" = "12.0" ]; then \
+#     wget https://developer.download.nvidia.com/compute/cuda/12.0.1/local_installers/cuda-repo-ubuntu1804-12-0-local_12.0.1-525.85.12-1_amd64.deb \
+#     dpkg -i cuda-repo-ubuntu1804-12-0-local_12.0.1-525.85.12-1_amd64.deb; \
+#     cp /var/cuda-repo-ubuntu1804-12-0-local/cuda-*-keyring.gpg /usr/share/keyrings/; \
+# elif [ "$CUDA_VERSION" = "10.2" ]; then \
+#     wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin; \
+#     mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600; \
+#     wget https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb; \
+#     dpkg -i cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb; \
+#     apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub; \
+# else \
+#     echo "Invalid CUDA_VERSION selected" ; \
+# fi

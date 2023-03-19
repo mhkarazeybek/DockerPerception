@@ -1,0 +1,73 @@
+#!/bin/bash
+
+XUBUNTU_VERSION=18.04
+XUBUNTU_VERSION_CHOICE=("18.04" "20.04" "22.04")
+
+XCUDA_VERSIONS=11.4
+XCUDA_VERSION_CHOICE=("11.4" "12.0" "10.2")
+
+XCMAKE_VERSION=22.10
+XCMAKE_VERSION_CHOICE=("22.10" "10.2")
+
+XOPENCV_VERSION=4.5.1
+XOPENCV_VERSION_CHOICE=("4.5.1")
+
+menu() {
+        choice=0
+
+        while true; do
+                XCHOICE=("$@")
+                echo -e "\nplease select a $1"
+                for (( i=1; i < ${#XCHOICE[@]} ; i++)) ; do
+                        echo "$i - ${XCHOICE[$i]}"
+                done
+                read -n 1 -p "Your choice -> " choice
+                echo -e 
+                if (($choice >=1 && $choice < ${#XCHOICE[@]})); then  break ; fi
+        done
+}
+echo "This script will create a Kali Linux docker container for you"
+
+menu  "UBUNTU Version" ${XUBUNTU_VERSION_CHOICE[@]}
+XUBUNTU_VERSION=${XUBUNTU_VERSION_CHOICE[$choice-1]}
+
+menu  "CUDA Version" ${XCUDA_VERSION_CHOICE[@]}
+XCUDA_VERSIONS=${XCUDA_VERSION_CHOICE[$choice-1]}
+
+menu  "Cmake Version" ${XCMAKE_VERSION_CHOICE[@]}
+XCMAKE_VERSION=${XCMAKE_VERSION_CHOICE[$choice-1]}
+
+menu  "Opencv Version" ${XOPENCV_VERSION_CHOICE[@]}
+XOPENCV_VERSION=${XOPENCV_VERSION_CHOICE[$choice-1]}
+
+
+clear
+echo "You selected:\n"
+echo "Ubuntu Version:           $XUBUNTU_VERSION"
+echo "Cuda Version:             $XCUDA_VERSIONS"
+echo "Cmake Version:            $XCMAKE_VERSION"
+echo "Opencv Version:           $XOPENCV_VERSION"
+echo "Hit enter to start building the container"
+read
+
+UBUNTU_URL="${XUBUNTU_VERSION//./}"
+
+
+docker build -t docker-perception \
+        --build-arg UBUNTU_VERSION=$XUBUNTU_VERSION\
+        --build-arg CUDA_VERSION=$XCUDA_VERSIONS\
+        --build-arg CMAKE_VERSION=$XCMAKE_VERSION \
+        --build-arg OPENCV_VERSION=$XOPENCV_VERSION \
+        --build-arg UBUNTU_URL=$UBUNTU_URL \
+        .
+
+docker create --name docker-perception \
+                -p 23389:3389 \
+                -t \
+                -v docker_perception_data:/home/mhkarazeybek \
+                docker-perception
+
+
+echo "Your image and container have been built. It will now be started"
+docker start docker-perception
+echo "Use username:password root:mhk12345"

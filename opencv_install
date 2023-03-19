@@ -1,9 +1,11 @@
 #!/bin/bash
 
-OPENCV_VERSION=$1
-CUDA_VERSION=$2
+OPENCV_VERSION=${1}
+CUDA_VERSION=${2}
 
 apt-get install python3-numpy -y
+
+echo "-->"$OPENCV_VERSION"<--"
 
 wget -O opencv.zip https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip
 wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip

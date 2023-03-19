@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CMAKE_VERSION=$1
+CMAKE_VERSION=${1}
 
 apt-get install cmake -y
 

@@ -1,7 +1,9 @@
 #!/bin/bash
 
-CUDA_VERSION=$1
-UBUNTU_URL=$2
+CUDA_VERSION=${1}
+UBUNTU_URL=${2}
+
+echo "this value ->" $CUDA_VERSION "<-"
 
 if [ "$CUDA_VERSION" == "11.4" ]; then
     wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin;
@@ -20,7 +22,7 @@ elif [ "$CUDA_VERSION" == "10.2" ]; then
     dpkg -i cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb;
     apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub;
 else
-    echo "Invalid Cuda version"
+    echo "Invalid Cuda version $CUDA_VERSION"
 fi
 
 apt-get update -y
